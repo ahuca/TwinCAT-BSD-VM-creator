@@ -1,5 +1,5 @@
 # TwinCAT-BSD-VM-creator
-the script creates VirtualBox Virtual Machine from Twincat BSD image provided by [Beckhoff Automation](https://www.beckhoff.com/en-en/products/ipc/software-and-tools/operating-systems/c9900-s60x-cxxxxx-0185.html)
+the script creates VirtualBox Virtual Machine from Twincat BSD image provided by [Beckhoff Automation](https://www.beckhoff.com/en-en/products/ipc/software-and-tools/operating-systems/c9900-s60x-cxxxxx-0185.html). You can find lots of useful information in the [documentation](https://download.beckhoff.com/download/Document/ipc/embedded-pc/embedded-pc-cx/TwinCAT_BSD_en.pdf).
 
 ## Using the batch file
 
@@ -31,6 +31,13 @@ If VMs network defaults to `NAT`, you may not be able to connect to the PLC. The
 ![Host only](assets/pics/host-only.png)
 ![Bridged](assets/pics/bridged.png)
 
+# Solving route creation issue
+
+If you are having issues creating route to your VM, the reason could be that you are trying to create unsecured ADS connection. Unencrypted ADS connections are dissabled by default. To fix this issue, either use an encrypted route or update the rules in your VM's firewall. To do this, connect to your VM through WinSCP.
+![WinSCP connection](assets/pics/winscp.png) 
+ To start WinSCP with root rights, edit connection settings and click on Advanced. Update entry for SFTP server with entry `doas /usr/libexec/sftp-server` and click OK and SAVE. 
+ ![SFTP](assets/pics/sftp.png) 
+ Finally to update firewall rules, navigate to file `/etc/pf.conf` and add entry `pass in quick proto tcp to port 48898 synproxy state`. Save file and reboot your VM.
 
 
 
